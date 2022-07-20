@@ -1,8 +1,18 @@
 from ftplib import FTP
-import requests as rq
 
-def ftp_client():
-    structure = []
+def main():
+    structure = [{
+        'region': ['region'],
+        'city': [{'region': 'region1', 'city': ['city1', 'city2', 'city3']},
+                 {'region': 'region2', 'city': ['city2', 'city3', 'city4']},
+                 {'region': 'region3', 'city': ['city5', 'city6', 'city7']}],
+        'company': [{'city': 'city1', 'company': ['company1', 'company2', 'company3']},
+                    {'city': 'city2', 'company': ['company4', 'company5', 'company6']}],
+        'shops': [{'city': 'city1', 'shops': ['shop1', 'shop2', 'shop3']},
+                  {'city': 'city2', 'shops': ['shop4', 'shop5', 'shop6']}],
+        'device': [{'shop': 'shop1', 'devices': ['device1']},
+                   {'shop': 'shop2', 'devices': ['device2', 'device2']}]
+    }]
     ftp = FTP("91.122.209.148", "admin", "Admin29")
     ftp.cwd("Counter")
     list_folder = ftp.nlst()
@@ -13,18 +23,6 @@ def ftp_client():
         ftp.cwd("..")
     print(structure[::1])
 
-
-def main():
-    request = rq.post("http://{0}:8123".format('127.0.0.1'),
-                      params={
-        'database': "default",
-        'query': "insert into t values (1,1)"
-    },
-                      headers={
-        'X-ClickHouse-User': "default",
-        'X-ClickHouse-Key': ""}
-                      )
-    print(request.text)
 
 if __name__ == '__main__':
     main()
