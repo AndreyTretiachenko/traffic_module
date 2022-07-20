@@ -1,6 +1,7 @@
 from ftplib import FTP
+import requests as rq
 
-def main():
+def ftp_client():
     structure = []
     ftp = FTP("91.122.209.148", "admin", "Admin29")
     ftp.cwd("Counter")
@@ -12,6 +13,18 @@ def main():
         ftp.cwd("..")
     print(structure[::1])
 
+
+def main():
+    request = rq.post("http://{0}:8123".format('127.0.0.1'),
+                      params={
+        'database': "default",
+        'query': "insert into t values (1,1)"
+    },
+                      headers={
+        'X-ClickHouse-User': "default",
+        'X-ClickHouse-Key': ""}
+                      )
+    print(request.text)
 
 if __name__ == '__main__':
     main()
