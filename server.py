@@ -1,4 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from send_in_database import send_request
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
@@ -17,6 +18,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write('Hello, post!'.encode())
             print(self.rfile.read().decode())
+            send_request(self.rfile.read().decode())
 
 httpd = HTTPServer(('192.168.0.34', 8000), SimpleHTTPRequestHandler)
 httpd.serve_forever()
