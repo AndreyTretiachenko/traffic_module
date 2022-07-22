@@ -1,4 +1,7 @@
+import datetime
+
 import requests as rq
+import datetime as dtime
 
 body_1 = {"serial_number": "70-b3-d5-1a-05-48", "dateTime": "2022-07-21 15:43",
         "passReport": [{"id": 1,
@@ -32,11 +35,11 @@ def send_request(body_request):
     data_body = parse_body(body_request)
     if len(data_body) != 0:
         for data in data_body:
-            request = rq.post("192.168.0.37:8123",
+            print(f"INSERT INTO traffic (serial_number, dateTime, pass_type, pass_time) VALUES ('{data['serial_number']}', {dtime.datetime.strptime(data['dateTime'], '%Y-%m-%d %H:%M')})")
+            request = rq.post("http://192.168.0.43:8123",
                               params={
-                                  "database": "test",
-                                  "query": f"INSERT INTO traffic VALUES ("
-                                           f"{data['serial_number']}, {data['dateTime']}, {data['pass_type']}, {data['pass_time']}"
+                                  "database": "vladykin",
+                                  "query": f"INSERT INTO traffic (serial_number, dateTime, pass_type, pass_time) VALUES ('123', '{dtime.datetime.strptime(data['dateTime'], '%Y-%m-%d %H:%M')}', {data['pass_type']}, '{dtime.time.strptime(data['dateTime'], '%H:%M:%S')}')"
                               }
                               )
             print(request.text)
